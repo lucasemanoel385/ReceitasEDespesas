@@ -1,0 +1,1 @@
+alter table despesas add column categoria varchar(25);
