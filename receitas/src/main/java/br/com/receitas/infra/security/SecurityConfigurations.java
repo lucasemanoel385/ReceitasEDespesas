@@ -25,19 +25,27 @@ public class SecurityConfigurations {
 	@Bean	//Esse é um objeto do spring que é usado pra configurar coisas relacionadas sobre autorizacao e autenticacao
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		//csrf.disable, desabilitarmos o tratamento contra ataques do tipo CSRF (Cross-Site Request Forgery). Pq o nosso token ja vai fazer esse tratamento. E pediu pro spring e me da o formulario e a autenticacao STATELESS pq aqui é uma API REST
-		return http.csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-				//authorizeHttpRequest serve pra gente configurar como vai ser a autorização das configurações
-				.and().authorizeHttpRequests()
-				//requestMatchers é pra informar se é pra ser bloqueada ou liberada X URL .Se caso vim uma requisção /login do method POST permita e o resto bloquea tuto
-				.requestMatchers(HttpMethod.POST,"/login").permitAll()
-				.requestMatchers(HttpMethod.DELETE, "/receitas/*").hasRole("ADMIN")
-				.requestMatchers(HttpMethod.DELETE, "/despesas/*").hasRole("ADMIN")
-				.requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
-				//anyRequest authenticated serve pra falar que se qualquer outra requisição tem que está atutenticado
-				.anyRequest().authenticated()
-				//addFIlterBefore ordena a requisição por onde será passada primeiro. Username é o filter do spring
-				.and().addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
-				.build();
+		return http.csrf(csrf -> csrf.disable()).sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).
+				authorizeHttpRequests(at -> at.requestMatchers(HttpMethod.POST,"/login").permitAll()
+						.requestMatchers(HttpMethod.POST,"/cadastro").permitAll()
+						.requestMatchers(HttpMethod.DELETE, "/receitas/*").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.DELETE, "/despesas/*").hasRole("ADMIN")
+						.requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
+						.anyRequest().authenticated())
+						.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class).build();
+//				//authorizeHttpRequest serve pra gente configurar como vai ser a autorização das configurações
+//				.and().authorizeHttpRequests()
+//				//requestMatchers é pra informar se é pra ser bloqueada ou liberada X URL .Se caso vim uma requisção /login do method POST permita e o resto bloquea tuto
+//				.requestMatchers(HttpMethod.POST,"/login").permitAll()
+//				.requestMatchers(HttpMethod.POST,"/cadastro").permitAll()
+//				.requestMatchers(HttpMethod.DELETE, "/receitas/*").hasRole("ADMIN")
+//				.requestMatchers(HttpMethod.DELETE, "/despesas/*").hasRole("ADMIN")
+//				.requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
+//				//anyRequest authenticated serve pra falar que se qualquer outra requisição tem que está atutenticado
+//				.anyRequest().authenticated()
+//				//addFIlterBefore ordena a requisição por onde será passada primeiro. Username é o filter do spring
+//				.and().addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+//				.build();
 	}
 
 	@Bean //Serve pra exportar uma classe para o spring, fazendo com que ele consiga carregá-la e realize a sua injeção de dependência em outras classes.

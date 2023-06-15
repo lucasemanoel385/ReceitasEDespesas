@@ -1,7 +1,5 @@
 package br.com.receitas.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +20,6 @@ import br.com.receitas.domain.receitas.DadosCadastroEAtualizarReceita;
 import br.com.receitas.domain.receitas.ListarReceitas;
 import br.com.receitas.domain.receitas.ReceitasRepository;
 import br.com.receitas.domain.receitas.service.ReceitasService;
-import br.com.receitas.domain.usuario.AutenticacaoService;
 import br.com.receitas.infra.exceptions.ValidacaoException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;

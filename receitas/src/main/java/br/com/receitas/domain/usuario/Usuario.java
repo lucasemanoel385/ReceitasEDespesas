@@ -1,12 +1,15 @@
 package br.com.receitas.domain.usuario;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import br.com.receitas.domain.perfil.Perfil;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -14,6 +17,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -34,10 +38,18 @@ public class Usuario implements UserDetails{
 	private String senha;
 	
 	@ManyToMany(fetch = FetchType.EAGER)
-    private List<Perfil> perfis;
+    private List<Perfil> perfis = new ArrayList<Perfil>();
+	
+	
+	public Usuario(@Valid String login, String senha) {
+		this.login = login;
+		this.senha = senha;
+		
+	}
+	
 	
 	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
+	public Collection<? extends Perfil> getAuthorities() {
 		// TODO Auto-generated method stub
 		return this.perfis;
 	}
@@ -71,5 +83,14 @@ public class Usuario implements UserDetails{
 		// TODO Auto-generated method stub
 		return true;
 	}
+	
+	public List<Perfil> getPerfis() {
+		return perfis;
+	}
+	
+	public void setPerfis(List<Perfil> perfis) {
+		this.perfis = perfis;
+	}
+
 
 }

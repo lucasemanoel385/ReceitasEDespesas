@@ -46,6 +46,11 @@ public class TratadorDeErros {
 		return ResponseEntity.status(403).body(ex.getMessage());
 	}
 	
+	@ExceptionHandler(ChaveDuplicadaBDException.class)
+	public ResponseEntity tratarErroDeDuplicidadeBD(ChaveDuplicadaBDException ex) {
+		return ResponseEntity.status(400).body(ex.getMessage());
+	}
+	
 	//Criamos essa DTO pq só vai ser usada aqui
 	private record DadosErrosValidacao(String campo, String mensagem) {
 		public DadosErrosValidacao(FieldError erro) {
