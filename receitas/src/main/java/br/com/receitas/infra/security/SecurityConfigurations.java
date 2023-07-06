@@ -28,10 +28,12 @@ public class SecurityConfigurations {
 		return http.csrf(csrf -> csrf.disable()).sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).
 				authorizeHttpRequests(at -> at.requestMatchers(HttpMethod.POST,"/login").permitAll()
 						.requestMatchers(HttpMethod.POST,"/cadastro").permitAll()
+						.requestMatchers(HttpMethod.GET,"/receitas").permitAll()
 						.requestMatchers(HttpMethod.DELETE, "/receitas/*").hasRole("ADMIN")
 						.requestMatchers(HttpMethod.DELETE, "/despesas/*").hasRole("ADMIN")
 						.requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll()
 						.anyRequest().authenticated())
+							//podemos trocar securityFilter por new UsernamePassowrdAuthenticationFilter()
 						.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class).build();
 //				//authorizeHttpRequest serve pra gente configurar como vai ser a autorização das configurações
 //				.and().authorizeHttpRequests()

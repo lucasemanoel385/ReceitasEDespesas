@@ -19,6 +19,8 @@ import br.com.receitas.infra.exceptions.ChaveDuplicadaBDException;
 import jakarta.validation.Valid;
 
 
+					//O Spring secutiry tem que saber qual classe que faz o serviço de autenticação
+					//Usamos a interface UserDetailsService pra fazer essa identificação, na hora da autenticação o spring  encontra ela sozinha graças há isso
 @Service
 public class AutenticacaoService implements UserDetailsService{
 	
@@ -33,7 +35,7 @@ public class AutenticacaoService implements UserDetailsService{
 	
 	private final Logger logger = LoggerFactory.getLogger(AutenticacaoService.class);
 	
-	@Override
+	@Override 	//Quando o usuario fizer login é esse metodo que será chamado pra verificar caso nao encontre manda um UsernameNotFound(Não encontrado)
 	public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
 		var t = repository.findByLogin(login);
 		return t;
